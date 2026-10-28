@@ -32,15 +32,25 @@ export default function PrintPage() {
             <section key={name} className="sheet">
               <h2 className="sheet-title">{name} 2027</h2>
               <div className="grid">
-                {WEEKDAYS.map((w) => <div key={w} className="wd">{w}</div>)}
+                {WEEKDAYS.map((w, idx) => (
+                  <div key={w} className={`wd ${idx === 0 ? "sun" : idx === 6 ? "sat" : ""}`}>
+                    {w}
+                  </div>
+                ))}
                 {Array.from({ length: first }, (_, i) => <div key={`b${i}`} className="day blank" />)}
                 {Array.from({ length: days }, (_, i) => {
                   const d = i + 1;
                   const ev = data[iso(m, d)];
-                  const cls = ["day", (first + i) % 7 === 0 && "sun", ev?.img && "img"].filter(Boolean).join(" ");
+                  const isSunday = (first + i) % 7 === 0;
+                  const isSaturday = (first + i) % 7 === 6;
+                  const cls = ["day", isSunday && "sun", isSaturday && "sat", ev?.img && "img"].filter(Boolean).join(" ");
                   return (
-                    <div key={d} className={cls} style={ev?.img ? { backgroundImage: `url(${ev.img})` } : undefined}>
-                      <div className="n">{d}</div>
+                    <div key={d} className={cls} style={ev?.img ? { backgroundImage: `url("${ev.img}")` } : undefined}>
+                      <div className="day-header">
+                        <div className={`n ${isSunday ? "sun-date" : ""} ${isSaturday ? "sat-date" : ""}`}>
+                          {d}
+                        </div>
+                      </div>
                       {ev?.note && <div className="t">{ev.note}</div>}
                     </div>
                   );

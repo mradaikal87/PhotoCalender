@@ -540,7 +540,7 @@ export default function Calendar() {
               <div
                 key={k}
                 className={classList}
-                style={hasPhoto ? { backgroundImage: `url(${ev.img})` } : undefined}
+                style={hasPhoto ? { backgroundImage: `url("${ev.img}")` } : undefined}
                 onClick={() => select(k)}
                 role="button"
                 tabIndex={0}
@@ -551,7 +551,9 @@ export default function Calendar() {
                 }}
               >
                 <div className="day-header">
-                  <div className="n">{d}</div>
+                  <div className={`n ${isSunday ? "sun-date" : ""} ${isSaturday ? "sat-date" : ""}`}>
+                    {d}
+                  </div>
                   {hasPhoto && <span className="day-camera-badge">📷</span>}
                 </div>
                 {ev?.note && <div className="t">{ev.note}</div>}
